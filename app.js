@@ -29,6 +29,10 @@ app.get("/register", (req, res) => {
     res.render("register");
 })
 
+app.get("/login", (req, res) => {
+  res.render("login");
+})
+
 app.get('/successRegister', (req, res) => {
   res.render("successRegister");
 });
@@ -50,6 +54,21 @@ app.post("/register", (req, res) => {
         if (err) console.log("error adding new user")
         else res.redirect("/successRegister");
       });
+})
+
+app.post("/login", (req, res) => {
+    
+  const user = new User ({
+      email: req.body.userName,
+      pswd: req.body.password
+  })
+
+    user.db.findOne({userName: email}, (err, user) => {
+      if (password === pswd){
+        res.redirect("/events");
+      }
+      else console.log("error adding new user");
+    })
 })
 
 app.listen(3000, function() {
