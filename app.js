@@ -41,11 +41,20 @@ app.get('/successEvent', (req, res) => {
   res.render("successEvent");
 });
 
+app.get('/event', (req, res) => {
+  res.render("event");
+  // add validation and redirect to the event
+});
+
+app.get('/viewEvent', (req, res) => {
+  res.render("viewEvent");
+});
+
 app.post("/register", (req, res) => {
     
     const user = new User ({
         userName: req.body.userName,
-        FirstName: req.body.fName,
+        firstName: req.body.fName,
         lastName: req.body.lName,
         password: req.body.password
     })
@@ -58,19 +67,20 @@ app.post("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
     
-  const user = new User ({
-      email: req.body.userName,
-      pswd: req.body.password
-  })
+    email = req.body.userName,
+    pswd = req.body.password
 
-    user.db.findOne({userName: email}, (err, user) => {
-      if (password === pswd){
+    User.findOne({userName: email}, (err, foundUser) => {
+      if (foundUser.password === pswd){
         res.redirect("/events");
       }
-      else console.log("error adding new user");
+      else {
+        res.redirect("/login")
+        console.log("error adding new user");
+      }
     })
 })
 
 app.listen(3000, function() {
-    console.log("Server started on port 3000");
-  });
+  console.log("Server started on port 3000");
+});
