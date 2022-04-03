@@ -24,7 +24,6 @@ app.get('/', (req, res) => {
     res.render("home");
 });
 
-
 app.get("/register", (req, res) => {
     res.render("register");
 })
@@ -41,9 +40,8 @@ app.get('/successEvent', (req, res) => {
   res.render("successEvent");
 });
 
-app.get('/event', (req, res) => {
-  res.render("event");
-  // add validation and redirect to the event
+app.get('/events', (req, res) => {
+  res.render("events");
 });
 
 app.get('/viewEvent', (req, res) => {
@@ -79,6 +77,7 @@ app.post("/login", (req, res) => {
         console.log("error adding new user");
       }
     })
+    
 })
 
 app.listen(3000, function() {
