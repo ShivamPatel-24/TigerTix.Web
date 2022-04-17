@@ -7,7 +7,7 @@ const session = require("express-session");
 const passport = require("passport");
 // const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const findOrCreate = require('mongoose-findorcreate')
+// const findOrCreate = require('mongoose-findorcreate')
 
 
 const app = express();
@@ -37,7 +37,7 @@ const UserSchema = {
 }
 
 // UserSchema.plugin(passportLocalMongoose);
-UserSchema.plugin(findOrCreate);
+// UserSchema.plugin(findOrCreate);
 
 const User = mongoose.model('User', UserSchema);
 
@@ -61,11 +61,34 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.CLIENT_SECRET,
   callbackURL: "http://localhost:3000/auth/google/TigerTix"
 },
-function(accessToken, refreshToken, profile, cb) {
+function(accessToken, refreshToken, profile, done) {
   console.log(profile)
-  User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    return cb(err, user);
-  });
+  User.findOne({
+    'google.id' : profile.id 
+}, function(err, user) {
+    if (err) {
+        return done(err);
+    }
+    //No user was found... so create a new user with values from Google (all the profile. stuff)
+    if (!user) {
+        user = new User({
+            name: profile.displayName,
+            email: profile.emails[0].value,
+            username: profile.username,
+            provider: 'google',
+            //now in the future searching on User.findOne({'google.id': profile.id } will match because of this next line
+            google: profile._json
+        });
+        user.save(function(err) {
+            if (err) console.log(err);
+            return done(err, user);
+        });
+    } else {
+        //found user. Return
+        return done(err, user);
+    }
+});
+  
 }
 ));
 
