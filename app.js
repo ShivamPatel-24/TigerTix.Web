@@ -5,10 +5,7 @@ const ejs = require("ejs");
 const mongoose = require('mongoose');
 const session = require("express-session");
 const passport = require("passport");
-// const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const findOrCreate = require('mongoose-findorcreate')
-
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -24,10 +21,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/TigerTixDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.API)
 
 const UserSchema = {
   userName: String,
@@ -36,12 +30,7 @@ const UserSchema = {
   password: String
 }
 
-// UserSchema.plugin(passportLocalMongoose);
-// UserSchema.plugin(findOrCreate);
-
 const User = mongoose.model('User', UserSchema);
-
-// passport.use(User.createStrategy());
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
@@ -62,7 +51,7 @@ passport.use(new GoogleStrategy({
   callbackURL: "http://localhost:3000/auth/google/TigerTix"
 },
 function(accessToken, refreshToken, profile, done) {
-  console.log(profile)
+  //console.log(profile)
   User.findOne({
     'google.id' : profile.id 
 }, function(err, user) {
@@ -71,6 +60,7 @@ function(accessToken, refreshToken, profile, done) {
     }
     //No user was found... so create a new user with values from Google (all the profile. stuff)
     if (!user) {
+        console.log(profile._json)
         user = new User({
             name: profile.displayName,
             email: profile.emails[0].value,
