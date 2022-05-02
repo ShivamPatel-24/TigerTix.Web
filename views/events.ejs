@@ -1,8 +1,16 @@
 <%- include('partials/header') %>
 
-<div align="center">
-    <a class="btn btn-dark btn-lg mt-5" href="/addEvent" role="button">Add an Event</a>
+<div class="jumbotron centered">
+    <div align="center">
+        <h1>Events</h1>
+        <div class="mt-5">
+            <a class="btn btn-primary btn-lg" href="/addEvent" role="button">Add an Event</a>
+            <a class="btn btn-dark btn-lg" href="/" role="button">Return to homepage</a>
+        </div>
+    </div>
 </div>
+
+
 <div align="center">
     
     <%for (var i = 0; i < eventsArr.length; i++) { %>

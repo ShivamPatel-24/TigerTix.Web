@@ -193,16 +193,16 @@ app.post("/login", (req, res) => {
 app.get("/events/:event", (req, res) => {
   let eventTitle = req.params.event
 
-  console.log("\n\n\n\n", eventTitle)
   Event.findOne({title: eventTitle}, (err, foundEvent) => {
     
-    if (err) alert("no event found\n\n\n\n")
+    if (err) alert("no event found")
     else {
       console.log(foundEvent)
       res.render("viewEvent", {EventId: foundEvent})
     }
   })
 })
+
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
