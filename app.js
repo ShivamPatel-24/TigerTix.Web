@@ -138,6 +138,20 @@ app.get('/addEvent', (req, res) => {
   res.render("addEvent");
 });
 
+// Templating the events
+app.get("/events/:event", (req, res) => {
+  let eventTitle = req.params.event
+
+  Event.findOne({title: eventTitle}, (err, foundEvent) => {
+    
+    if (err) alert("no event found")
+    else {
+      console.log(foundEvent)
+      res.render("viewEvent", {EventId: foundEvent})
+    }
+  })
+})
+
 app.post("/addEvent", (req, res) => {
   
   console.log(req.body)
@@ -165,10 +179,10 @@ app.post("/register", (req, res) => {
         password: req.body.password
     })
 
-      user.save(err => {
-        if (err) console.log("error adding new user")
-        else res.redirect("/successRegister");
-      });
+    user.save(err => {
+      if (err) console.log("error adding new user")
+      else res.redirect("/successRegister");
+    });
 })
 
 app.post("/login", (req, res) => {
@@ -188,20 +202,6 @@ app.post("/login", (req, res) => {
     
 })
 
-
-// Templating the events
-app.get("/events/:event", (req, res) => {
-  let eventTitle = req.params.event
-
-  Event.findOne({title: eventTitle}, (err, foundEvent) => {
-    
-    if (err) alert("no event found")
-    else {
-      console.log(foundEvent)
-      res.render("viewEvent", {EventId: foundEvent})
-    }
-  })
-})
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
