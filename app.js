@@ -60,7 +60,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/google/TigerTix"
+  callbackURL: "https://tigertix.azurewebsites.net/auth/google/TigerTix"
 },
 function(accessToken, refreshToken, profile, done) {
   //console.log(profile)
@@ -203,15 +203,8 @@ app.post("/login", (req, res) => {
 })
 
 
-let port = process.env.PORT;
-if (port == null || port == ""){
-    port = 3000;
-}
+let port = process.env.PORT || 3000;
 
 app.listen(port, function(){
     console.log('Server started on port successfully')
 });
-
-// app.listen(process.env.PORT || 3000, function(){
-//   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-// });
