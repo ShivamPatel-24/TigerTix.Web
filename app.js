@@ -31,7 +31,18 @@ const UserSchema = {
   password: String
 }
 
+const EventSchema = {
+  title: String,
+  date: String,
+  time: String,
+  location: String,
+  description: String
+}
+
+// Schemas
 const User = mongoose.model('User', UserSchema);
+const Event = mongoose.model('Event', EventSchema);
+
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
@@ -95,7 +106,7 @@ app.get('/auth/google/TigerTix',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect secrets.
-    res.redirect('/viewEvent');
+    res.redirect('/events');
   });
 
 app.get("/register", (req, res) => {
@@ -115,12 +126,35 @@ app.get('/successEvent', (req, res) => {
 });
 
 app.get('/events', (req, res) => {
-  res.render("events");
+  Event.find({}, (err, events) => {
+    if (err) console.log("error finding events")
+    else{
+      res.render("events", {eventsArr: events})
+    }
+  })
 });
 
-app.get('/viewEvent', (req, res) => {
-  res.render("viewEvent");
+app.get('/addEvent', (req, res) => {
+  res.render("addEvent");
 });
+
+app.post("/addEvent", (req, res) => {
+  
+  console.log(req.body)
+  const event = new Event ({
+      title: req.body.name,
+      date: req.body.date,
+      time: req.body.time,
+      location: req.body.location,
+      description: req.body.description
+  })
+
+  console.log(event)
+  event.save(err => {
+    if (err) alert("Error occurred adding new event, please try again.")
+    else res.redirect("/events");
+  });
+})
 
 app.post("/register", (req, res) => {
     
@@ -154,6 +188,21 @@ app.post("/login", (req, res) => {
     
 })
 
+
+// Templating the events
+app.get("/events/:event", (req, res) => {
+  let eventTitle = req.params.event
+
+  console.log("\n\n\n\n", eventTitle)
+  Event.findOne({title: eventTitle}, (err, foundEvent) => {
+    
+    if (err) alert("no event found\n\n\n\n")
+    else {
+      console.log(foundEvent)
+      res.render("viewEvent", {EventId: foundEvent})
+    }
+  })
+})
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });

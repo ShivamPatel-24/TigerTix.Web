@@ -1,0 +1,41 @@
+<%- include("partials/header") %>
+
+    <h1 class="text-center my-3 !important"> Add an Event </h1>
+
+    <form action="/addEvent" method="post">
+        <div class="border border-5" style="margin: 5% 20%; padding: 5% 5%">
+            <div class="form-group">
+                <label for="name">Event Name</label>
+                <input type="name" class="form-control" id="name" name="name" required>
+            </div>
+      
+              <div class="row">
+                  <div class="form-group col">
+                      <label for="date">Event Date</label>
+                      <input type="date" class="form-control" id="date" name="date" required>
+                  </div>
+          
+                  <div class="form-group col">
+                  <label for="time">Event time</label>
+                  <input type="time" class="form-control" id="time" name="time" required>
+                  </div>
+              </div>
+      
+              <div class="form-group">
+                  <label for="location">Event Location</label>
+                  <input type="location" class="form-control" id="location" name="location" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="description">Event Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+              </div>
+      
+              <button type="submit" class="btn btn-primary">Publish</button>
+        </div>
+        
+      </form>
+
+      
+    
+<%- include("partials/footer") %>
