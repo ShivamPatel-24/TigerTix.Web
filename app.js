@@ -105,7 +105,7 @@ app.get('/auth/google',
 app.get('/auth/google/TigerTix', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect secrets.
+    // Successful authentication, redirect to events page.
     res.redirect('/events');
   });
 
