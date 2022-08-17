@@ -1,3 +1,11 @@
-# TigerTix
+# TigerTix - CU Events App
 
-TigerTix is a web app project for software development course. It basic functionality are enabling organizers to publish their events and users can view it and buy a ticket for that event.
+## About:
+- TigerTix is a web app project that whose idea was derived from a school course.
+- It basic functionalities are enabling organizers to publish their events and users to view the events and buy a ticket for them.
+- The project is built on `Node.js, Express.js, EJS, MongoDB, BootStrap, Passport.js, JavaScript`
+- `Currently the app link is not functional`
+
+## Local Deployment
+- Install dependencies
+- Run command `node app.js`
